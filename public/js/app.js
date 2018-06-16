@@ -1,67 +1,85 @@
-const newsArray = [
-    {
-        author: 'Author 1',
-        text: '"Lorem ipsum dolor sit amet, consectetur adipiscing elit'
-    },
-    {
-        author: 'Author 2',
-        text: ' sed do eiusmod tempor incididunt ut labore et dolore magna aliqua'
-    },
-    {
-        author: 'Author 3',
-        text: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-    }
-];
+const Article = (props) => {
+    var {author, text} = props;
+    return (
+        <div className='article'>
+            <p className='news__author'>{author}:</p>
+            <p className='news__text'>{text}</p>
+        </div>
+    )
+};
 
+Article.defaultProps = {
+    author: 'Stranger'
+};
+
+Article.propTypes = {
+    author: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired
+};
 
 const News = (props) => {
     const {data} = props;
-    var newsTemplate = data.map(function (item, index) {
-        return (
-            <div key={index}>
-                <p className="news__author">{item.author}:</p>
-                <p className="news__text">{item.text}</p>
-            </div>
-        )
-    });
+    let newsTemplate;
+    if (data.length > 0) {
+        newsTemplate = data.map(function (item, index) {
+            return (
+                <div key={index}>
+                    <Article author={item.author} text={item.text} elem={Comments}/>
+                </div>
+            )
+        });
+    }
+    else
+        newsTemplate = <p>Empty news</p>;
     return (
         <div className="news">
             {newsTemplate}
+            <strong className={'news__count ' + (data.length > 0 ? '' : 'none')}>Total: {data.length}</strong>
         </div>
     );
 };
 
-function CommentsAsFunction(){
-    return <div className="comments">
-        Empty comments as function
-    </div>;
-}
+News.propTypes = {
+    data: PropTypes.array.isRequired
+};
 
-const CommentsAsArrayFunc = () => (
+const Comments = () => (
     <div className="comments">
-        Empty comments as array function
+        Empty comments
     </div>
 );
 
-class CommentsAsClass extends React.Component {
 
-    componentDidMount() {
-        console.log('componentDidMount');
+class App extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {data: [], isLoading: false};
     }
 
-   render (){
-       return <div className="comments">
-           Empty comments as class
-       </div>
-   }
-}
+    componentDidMount() {
+        this.setState({isLoading: true}, () => {
+            setTimeout(() => {
+                fetch("/api/data")
+                    .then(res => res.json())
+                    .then(news => {
+                        console.log(news);
+                        this.setState({data: news, isLoading: false})
+                    });
+            }, 4000);
+        });
+    }
 
-const App = () => (
-    <div>
-        App title
-        <News data={newsArray} />
-    </div>
-);
+    render() {
+        const {isLoading} = this.state;
+        return (
+            <div className="app">
+                {isLoading && <div>Loading...</div>}
+                <News data={this.state.data}/>
+                <Comments/>
+            </div>);
+    }
+}
 
 ReactDOM.render(
     <App/>,

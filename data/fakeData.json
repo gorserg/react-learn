@@ -1,22 +1,13 @@
 [
   {
-    "id" : 1,
-    "name": "Item 1"
+    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
   },
   {
-    "id" : 2,
-    "name": "Item 2"
+    "author": "Author 2",
+    "text": " sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
   },
   {
-    "id" : 3,
-    "name": "Item 3"
-  },
-  {
-    "id" : 4,
-    "name": "Item 4"
-  },
-  {
-    "id" : 5,
-    "name": "Item 5"
+    "author": "Author 3",
+    "text": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
   }
 ]
