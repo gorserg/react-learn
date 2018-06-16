@@ -1,6 +1,6 @@
 {
   "name": "react-learn",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Learn react tutorial",
   "main": "index.js",
   "scripts": {
